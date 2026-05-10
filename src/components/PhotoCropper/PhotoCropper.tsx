@@ -31,7 +31,6 @@ export function PhotoCropper({ src, value, onChange }: Props) {
   const [naturalSize, setNaturalSize] = useState<{ w: number; h: number } | null>(null);
 
   const dragRef = useRef<DragState | null>(null);
-  const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -104,7 +103,6 @@ export function PhotoCropper({ src, value, onChange }: Props) {
   return (
     <div className={styles.container}>
       <div
-        ref={previewRef}
         className={styles.preview}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}

@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useT } from "../../i18n/I18nContext";
 import styles from "./Toast.module.css";
 
 export type ToastVariant = "success" | "error" | "info";
@@ -24,6 +25,7 @@ const ICONS: Record<ToastVariant, string> = {
 const DURATION = 3500;
 
 export function ToastProvider({ children }: { children: ReactNode }) {
+  const i18n = useT();
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const idRef = useRef(0);
   const timersRef = useRef<Map<number, number>>(new Map());
@@ -71,7 +73,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               type="button"
               className={styles.close}
               onClick={() => dismiss(t.id)}
-              aria-label="Cerrar"
+              aria-label={i18n.common.close}
             >
               ×
             </button>

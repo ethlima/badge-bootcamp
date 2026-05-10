@@ -179,7 +179,7 @@
   padding: 64px 32px;
   position: relative;
   overflow: hidden;
-  background: #e8d896;
+  background: var(--cream);
 }
 
 .captureFrame {

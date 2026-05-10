@@ -6,6 +6,10 @@ import smileySvg from "./smiley.svg?raw";
 import regaloSvg from "./regalo.svg?raw";
 import styles from "./Badge.module.css";
 
+/* The visible photo slot is 360.6px wide in preview (601 canvas * 0.6).
+   The photo is rendered as a square sized PHOTO_SLOT_SIZE * scale, so we
+   pick 366 (>360.6) to guarantee horizontal coverage and avoid a 0.6px
+   sub-pixel gap that would otherwise expose the slot's gray bg. */
 const PHOTO_SLOT_SIZE = 366;
 
 type Props = {
@@ -25,6 +29,12 @@ function getPhotoStyle(photo: PhotoCrop): CSSProperties {
   };
 }
 
+function formatTag(raw: string): string {
+  const trimmed = raw.trim();
+  if (!trimmed) return "@nickname";
+  return trimmed.startsWith("@") ? trimmed : `@${trimmed}`;
+}
+
 export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
   { name, tag, photo },
   ref
@@ -32,23 +42,28 @@ export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
   const t = useT();
   const isEN = t.locale.switch === "ES";
   const displayName = name.trim() || (isEN ? "Your name" : "Tu nombre");
-  const displayTag = tag.trim();
-  const tagFallback = isEN ? "@nickname" : "@nickname";
-  const tagText = displayTag
-    ? displayTag.startsWith("@")
-      ? displayTag
-      : `@${displayTag}`
-    : tagFallback;
+  const tagText = formatTag(tag);
 
   return (
     <div ref={ref} className={styles.badge}>
+      {/* Background colors */}
       <div className={styles.bgTop} aria-hidden="true" />
+      <div className={styles.bgBottom} aria-hidden="true" />
+
+      {/* Decorations behind the photo column */}
       <div className={styles.limeRing} aria-hidden="true" />
       <div
         className={styles.regalo}
         aria-hidden="true"
         dangerouslySetInnerHTML={{ __html: regaloSvg }}
       />
+      <div
+        className={styles.bootcampLogo}
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: bootcampLogoSvg }}
+      />
+
+      {/* Right-side decorations */}
       <div className={styles.checker} aria-hidden="true">
         <span data-c="lime" />
         <span data-c="blue" />
@@ -63,14 +78,11 @@ export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
         aria-hidden="true"
         dangerouslySetInnerHTML={{ __html: smileySvg }}
       />
-      <div className={styles.bgBottom} aria-hidden="true" />
-      <div className={styles.yellowBar} aria-hidden="true" />
-      <div
-        className={styles.bootcampLogo}
-        aria-hidden="true"
-        dangerouslySetInnerHTML={{ __html: bootcampLogoSvg }}
-      />
 
+      {/* Cream-zone left ribbon */}
+      <div className={styles.yellowBar} aria-hidden="true" />
+
+      {/* Foreground content */}
       <span className={styles.headline}>{t.badge.headline}</span>
 
       <div className={styles.photoSlot}>

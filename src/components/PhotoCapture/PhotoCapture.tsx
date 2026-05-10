@@ -75,7 +75,12 @@ export function PhotoCapture({ open, onCapture, onClose }: Props) {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [open, onClose]);
 
   const handleCapture = () => {
@@ -118,7 +123,7 @@ export function PhotoCapture({ open, onCapture, onClose }: Props) {
           type="button"
           className={styles.closeBtn}
           onClick={onClose}
-          aria-label="Close"
+          aria-label={t.common.close}
         >
           ×
         </button>
@@ -131,7 +136,7 @@ export function PhotoCapture({ open, onCapture, onClose }: Props) {
                 : t.photo.cameraUnavailable}
             </p>
             <Button variant="secondary" onClick={onClose}>
-              {t.locale.switch === "ES" ? "Close" : "Cerrar"}
+              {t.common.close}
             </Button>
           </div>
         ) : (

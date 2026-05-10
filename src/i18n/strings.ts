@@ -44,6 +44,10 @@ export type StringSet = {
     photoCaptured: string;
     formIncomplete: string;
   };
+  common: {
+    close: string;
+    livePreview: string;
+  };
   locale: { switch: string; switchAria: string };
 };
 
@@ -92,6 +96,10 @@ export const strings: Record<Locale, StringSet> = {
       downloadFailed: "No se pudo generar el badge",
       photoCaptured: "Foto capturada",
       formIncomplete: "Completa nombre y foto primero",
+    },
+    common: {
+      close: "Cerrar",
+      livePreview: "Vista en vivo",
     },
     locale: {
       switch: "EN",
@@ -142,6 +150,10 @@ export const strings: Record<Locale, StringSet> = {
       downloadFailed: "Could not generate badge",
       photoCaptured: "Photo captured",
       formIncomplete: "Complete name and photo first",
+    },
+    common: {
+      close: "Close",
+      livePreview: "Live preview",
     },
     locale: {
       switch: "ES",

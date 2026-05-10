@@ -1,44 +1,51 @@
-/* Badge canvas: SVG is 1080x1350, preview rendered at scale 0.6 = 648x810.
-   Capture at pixelRatio 2 = 1296x1620 (>SVG canvas, downscaled by html-to-image
-   clients to native resolution). All coords below are SVG canvas units * 0.6. */
+/* Badge canvas: 1080x1350 (Instagram post). Preview at scale 0.6 (648x810).
+   Capture at pixelRatio 2 = 1296x1620.
+
+   All inner coordinates are SVG canvas units * --bs.
+
+   Z-INDEX LAYERS:
+     0  bgTop, limeRing                      (background colors)
+     1  bgBottom, regalo, bootcampLogo,
+        photoSlot, headline                  (decorations + photo)
+     2  yellowBar, checker, namePill,
+        nickPill                             (pills + bands)
+     3  cyanSphere, message, arrowCircle,
+        footerLogos                          (focal content)
+     4  smiley                               (above the sphere) */
 .badge {
   --bs: 0.6;
+  --br: 14px;
+  --gray-soft: #d9dce3;
   width: calc(1080px * var(--bs));
   height: calc(1350px * var(--bs));
   position: relative;
-  border-radius: 14px;
+  border-radius: var(--br);
   flex-shrink: 0;
   font-family: var(--font-sans);
   isolation: isolate;
+  box-shadow: var(--elev-card);
 }
 
-/* Background sections — DOM divs so rounded corners render cleanly. */
+/* === Background sections (z 0–1) ===
+   Use complementary insets so the boundary at y=904 is shared, not
+   computed twice — eliminates sub-pixel gap between top and bottom. */
 .bgTop {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: calc(904px * var(--bs));
+  inset: 0 0 calc(446px * var(--bs)) 0;
   background: #112a59;
-  border-top-left-radius: 14px;
-  border-top-right-radius: 14px;
+  border-radius: var(--br) var(--br) 0 0;
   z-index: 0;
 }
 
 .bgBottom {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(904px * var(--bs));
-  bottom: 0;
+  inset: calc(904px * var(--bs)) 0 0 0;
   background: #fff8d8;
-  border-bottom-left-radius: 14px;
-  border-bottom-right-radius: 14px;
+  border-radius: 0 0 var(--br) var(--br);
   z-index: 1;
 }
 
-/* Lime ring decoration — extracted from SVG so we can place it BEHIND
-   bgBottom so the cream covers its lower half (matches original design). */
+/* === Lime ring (z 0) — peeks above bgBottom; cream covers its lower half. */
 .limeRing {
   position: absolute;
   left: calc(104px * var(--bs));
@@ -52,8 +59,50 @@
   z-index: 0;
 }
 
-/* Checker pattern (3 cols x 2 rows) — extracted from SVG. Sits above
-   bgBottom so the lower row stays visible over the cream zone. */
+/* === Regalo (lime/blue petals + yellow zigzag) — kept as inline SVG. */
+.regalo,
+.bootcampLogo,
+.smiley {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.regalo > svg,
+.bootcampLogo > svg,
+.smiley > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.regalo {
+  z-index: 1;
+}
+
+.bootcampLogo {
+  z-index: 1;
+}
+
+.smiley {
+  z-index: 4;
+}
+
+/* === Yellow bar (z 2) — sits over cream zone bottom-left. */
+.yellowBar {
+  position: absolute;
+  left: 0;
+  top: calc(905px * var(--bs));
+  width: calc(653px * var(--bs));
+  height: calc(63px * var(--bs));
+  background: #f7eb27;
+  z-index: 2;
+}
+
+/* === Checker (z 2) — 3x2 grid of lime/blue squares. */
 .checker {
   position: absolute;
   left: calc(875px * var(--bs));
@@ -73,26 +122,7 @@
   background: #214afe;
 }
 
-/* Regalo decoration (lime-blue petals + yellow zigzag) — sits in photo
-   zone, right of the photo. Kept as inline SVG because shapes have curves. */
-.regalo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  user-select: none;
-  z-index: 1;
-}
-
-.regalo > svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* Cyan sphere — extracted from smiley.svg, now a div so we can layer it
-   above the checker but below the smiley face details. */
+/* === Cyan sphere (z 3) — pure circle; sits above checker, below smiley. */
 .cyanSphere {
   position: absolute;
   left: calc(875px * var(--bs));
@@ -104,55 +134,7 @@
   z-index: 3;
 }
 
-/* Smiley face only (cream rim + blue inner + smile + eyes). Renders ABOVE
-   the cyan sphere div. */
-.smiley {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  user-select: none;
-  z-index: 4;
-}
-
-.smiley > svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* Yellow bar — sits over cream zone at the bottom of the photo area.
-   Original SVG rect was at x=-18 (extending past left edge); clamped to 0
-   here since we're not using overflow:hidden on the badge. */
-.yellowBar {
-  position: absolute;
-  left: 0;
-  top: calc(905px * var(--bs));
-  width: calc(653px * var(--bs));
-  height: calc(63px * var(--bs));
-  background: #f7eb27;
-  z-index: 2;
-}
-
-.bootcampLogo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  user-select: none;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.bootcampLogo > svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* Headline — Figma spec: 424x77 at (left=328, top=75) canvas. */
+/* === Headline (z 1) — Figma spec: 424x77 at (328, 75). */
 .headline {
   position: absolute;
   left: calc(328px * var(--bs));
@@ -173,7 +155,7 @@
   pointer-events: none;
 }
 
-/* Photo slot — visible photo area. SVG (240, 367, 601x458). */
+/* === Photo slot (z 1) — visible photo area (240, 367, 601x458). */
 .photoSlot {
   position: absolute;
   left: calc(240px * var(--bs));
@@ -181,7 +163,7 @@
   width: calc(601px * var(--bs));
   height: calc(458px * var(--bs));
   overflow: hidden;
-  background: #d9dce3;
+  background: var(--gray-soft);
   z-index: 1;
 }
 
@@ -203,8 +185,7 @@
   align-items: center;
   justify-content: center;
   gap: calc(20px * var(--bs));
-  background: #d9dce3;
-  color: #112a59;
+  color: #6b7385;
   text-align: center;
 }
 
@@ -212,7 +193,6 @@
   width: calc(140px * var(--bs));
   height: calc(140px * var(--bs));
   color: #6b7385;
-  opacity: 1;
 }
 
 .photoPlaceholderLabel {
@@ -221,11 +201,10 @@
   font-weight: 600;
   letter-spacing: 0.32em;
   color: #6b7385;
-  opacity: 1;
   text-transform: uppercase;
 }
 
-/* Name pill — solid blue block (240,824, 600x80). */
+/* === Name pill (z 2) — solid blue (240, 824, 600x80). */
 .namePill {
   position: absolute;
   left: calc(240px * var(--bs));
@@ -252,7 +231,7 @@
   width: 100%;
 }
 
-/* Nickname pill — solid lime block (240,904, 600x64). */
+/* === Nickname pill (z 2) — solid lime (240, 904, 600x64). */
 .nickPill {
   position: absolute;
   left: calc(240px * var(--bs));
@@ -279,7 +258,7 @@
   width: 100%;
 }
 
-/* Message — plain text in the cream zone, above the logos/arrow. */
+/* === Message (z 3) — text block in cream zone. */
 .message {
   position: absolute;
   left: calc(60px * var(--bs));
@@ -334,7 +313,7 @@
   margin-top: calc(10px * var(--bs));
 }
 
-/* Arrow circle — Figma spec: 131x131 at (left=921, top=1197) in canvas. */
+/* === Arrow circle (z 3) — Figma spec: 131x131 at (921, 1197). */
 .arrowCircle {
   position: absolute;
   left: calc(921px * var(--bs));
@@ -347,7 +326,7 @@
   z-index: 3;
 }
 
-/* Footer logos — bottom-left, near the bottom edge. */
+/* === Footer logos (z 3) — bottom-left, near the bottom edge. */
 .footerLogos {
   position: absolute;
   left: calc(46px * var(--bs));

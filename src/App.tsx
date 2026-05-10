@@ -139,6 +139,7 @@ function App() {
                 value={tag}
                 onChange={(e) => setTag(e.target.value)}
                 maxLength={23}
+                autoComplete="off"
               />
             </div>
           </div>
@@ -208,9 +209,7 @@ function App() {
               <Badge ref={badgeRef} name={name} tag={tag} photo={photo} />
             </div>
           </div>
-          <span className={styles.previewLabel}>
-            {t.locale.switch === "ES" ? "LIVE PREVIEW" : "VISTA EN VIVO"}
-          </span>
+          <span className={styles.previewLabel}>{t.common.livePreview}</span>
         </main>
       </div>
 
