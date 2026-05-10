@@ -268,7 +268,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: calc(12px * var(--bs));
+  gap: calc(18px * var(--bs));
   z-index: 3;
   pointer-events: none;
 }
@@ -299,7 +299,7 @@
   font-size: calc(60px * var(--bs));
   letter-spacing: -0.035em;
   color: #112a59;
-  line-height: 1.05;
+  line-height: 1.15;
 }
 
 .msgWelcome {
@@ -307,10 +307,10 @@
   font-weight: 400;
   font-style: italic;
   font-size: calc(26px * var(--bs));
-  line-height: 1.3;
+  line-height: 1.4;
   color: #2e3852;
   letter-spacing: -0.005em;
-  margin-top: calc(10px * var(--bs));
+  margin-top: calc(16px * var(--bs));
 }
 
 /* === Arrow circle (z 3) — Figma spec: 131x131 at (921, 1197). */
