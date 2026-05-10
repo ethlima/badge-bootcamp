@@ -46,14 +46,15 @@
   pointer-events: none;
 }
 
-/* Photo slot — visible photo area only. SVG (240, 368, 600x456). */
+/* Photo slot — visible photo area. SVG (240, 367, 601x458). */
 .photoSlot {
   position: absolute;
   left: calc(240px * var(--bs));
-  top: calc(368px * var(--bs));
-  width: calc(600px * var(--bs));
-  height: calc(456px * var(--bs));
+  top: calc(367px * var(--bs));
+  width: calc(601px * var(--bs));
+  height: calc(458px * var(--bs));
   overflow: hidden;
+  background: #d9dce3;
   z-index: 1;
 }
 

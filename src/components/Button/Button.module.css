@@ -1,90 +1,74 @@
 .button {
   width: 100%;
-  padding: 13px 20px;
-  border-radius: var(--radius-pill);
-  font-weight: 600;
+  padding: 15px 22px;
+  border-radius: 0;
+  font-weight: 700;
   font-size: 13.5px;
-  font-family: inherit;
+  font-family: var(--font-sans);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
-  transition:
-    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.25s ease,
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
-  border: 1px solid transparent;
-  letter-spacing: -0.005em;
+  transition: background 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+  border: none;
+  letter-spacing: 0.04em;
   white-space: nowrap;
+  text-transform: uppercase;
 }
 
 .button:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring), var(--button-shadow, 0 0 0);
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
 }
 
 .button:disabled {
-  opacity: 0.45;
+  opacity: 0.4;
   cursor: not-allowed;
-  transform: none !important;
 }
 
-/* === Primary: lime accent (web bootcamp main CTA style) === */
+/* === Primary: lime fill — main "submit / generate" CTA === */
 .primary {
-  background: var(--bootcamp-lime);
+  background: var(--lime);
   color: var(--ink);
-  box-shadow: var(--glow-lime);
-  --button-shadow: var(--glow-lime);
 }
 .primary:hover:not(:disabled) {
   background: #d4ff4f;
-  transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 0 64px -8px rgba(199, 247, 58, 0.85);
-}
-.primary:active:not(:disabled) {
-  transform: translateY(0);
 }
 
-/* === Accent: coral (sunset) — for download === */
+/* === Accent: blue fill — primary action (download badge) === */
 .accent {
-  background: var(--coral);
+  background: var(--blue);
   color: var(--cream);
-  box-shadow: var(--glow-coral);
-  --button-shadow: var(--glow-coral);
 }
 .accent:hover:not(:disabled) {
-  background: #ee5740;
-  transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 24px 60px -12px rgba(230, 74, 48, 0.7);
-}
-.accent:active:not(:disabled) {
-  transform: translateY(0);
+  background: #1635c5;
 }
 
-/* === Secondary: bootcamp-blue === */
+/* === Secondary: navy fill — alternate action === */
 .secondary {
-  background: var(--bootcamp-blue);
-  color: #fff;
-  box-shadow: var(--glow-blue);
-  --button-shadow: var(--glow-blue);
+  background: var(--ink);
+  color: var(--cream);
 }
 .secondary:hover:not(:disabled) {
-  background: var(--bootcamp-purple);
-  transform: translateY(-2px) scale(1.01);
-  box-shadow: var(--glow-purple);
+  background: #0a1d40;
 }
 
-/* === Ghost: subtle border, no fill === */
+/* === Ghost: text-only with underline accent === */
 .ghost {
   background: transparent;
-  color: var(--fg);
-  border: 1px solid var(--border-strong);
-  font-weight: 500;
+  color: var(--ink);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 8px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--ink);
+  width: auto;
 }
 .ghost:hover:not(:disabled) {
-  border-color: var(--fg);
-  background: rgba(11, 7, 23, 0.04);
+  color: var(--blue);
+  text-decoration-color: var(--blue);
 }

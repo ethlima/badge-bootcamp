@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, type ChangeEvent } from "react";
 import { toPng } from "html-to-image";
 import { Badge } from "./components/Badge/Badge";
 import { Button } from "./components/Button/Button";
@@ -21,18 +21,34 @@ function slugify(input: string): string {
 }
 
 function App() {
-  const { t, locale, toggleLocale } = useI18n();
+  const { t, toggleLocale } = useI18n();
   const { show } = useToast();
 
   const [name, setName] = useState("");
   const [tag, setTag] = useState("");
   const [photo, setPhoto] = useState<PhotoCrop | null>(null);
+  const [cameraOpen, setCameraOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
 
   const badgeRef = useRef<HTMLDivElement>(null);
+  const captureRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCapture = (src: string) => {
     setPhoto({ src, ...DEFAULT_CROP });
+    setCameraOpen(false);
+  };
+
+  const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPhoto({ src: reader.result as string, ...DEFAULT_CROP });
+      show(t.toast.photoCaptured, "success");
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
   };
 
   const handleCropChange = useCallback((next: Omit<PhotoCrop, "src">) => {
@@ -44,7 +60,8 @@ function App() {
   const canDownload = name.trim().length > 0 && photo !== null;
 
   const handleDownload = async () => {
-    if (!badgeRef.current) return;
+    const target = captureRef.current ?? badgeRef.current;
+    if (!target) return;
     if (!canDownload) {
       show(t.toast.formIncomplete, "error");
       return;
@@ -53,10 +70,10 @@ function App() {
     try {
       if (document.fonts?.ready) await document.fonts.ready;
 
-      const dataUrl = await toPng(badgeRef.current, {
+      const dataUrl = await toPng(target, {
         cacheBust: true,
         pixelRatio: 2,
-        backgroundColor: "#112a59",
+        backgroundColor: "#fff8d8",
       });
 
       const filename = `eth-lima-badge-${slugify(name) || "cohort-01"}.png`;
@@ -76,14 +93,8 @@ function App() {
     }
   };
 
-  const isEN = locale === "en";
-  const headlineLine1 = isEN ? "Your acceptance" : "Tu badge de";
-  const headlineHighlight = isEN ? "badge" : "aceptación";
-  const headlineSub = "Cohort 01 · 2026";
-
   return (
     <div className={styles.shell}>
-      {/* Floating locale toggle (no navbar) */}
       <button
         type="button"
         className={styles.localeFloat}
@@ -96,22 +107,69 @@ function App() {
       <div className={styles.body}>
         <aside className={styles.leftPanel}>
           <div className={styles.leftHeader}>
-            <span className={styles.eyebrow}>ETH·LIMA · BOOTCAMP</span>
-            <h1 className={styles.h1}>
-              {headlineLine1}{" "}
-              <span className={styles.gradientText}>{headlineHighlight}</span>
-            </h1>
-            <span className={styles.headlineSub}>{headlineSub}</span>
-            <p className={styles.subtitle}>{t.site.subtitle}</p>
+            <img
+              src="/logo.webp"
+              alt="Ethereum Lima"
+              className={styles.brandLogo}
+              draggable={false}
+            />
+            <h1 className={styles.h1}>{t.site.title}</h1>
+            <span className={styles.subtitle}>{t.site.subtitle}</span>
           </div>
 
           <div className={styles.section}>
             <span className={styles.sectionTitle}>
               <span className={styles.stepNum}>1</span>
+              Info
+            </span>
+            <div className={styles.fieldGroup}>
+              <Field
+                id="name"
+                label={t.form.nameLabel}
+                placeholder={t.form.namePlaceholder}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                maxLength={18}
+                autoComplete="off"
+              />
+              <Field
+                id="tag"
+                label={t.form.tagLabel}
+                placeholder={t.form.tagPlaceholder}
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
+                maxLength={23}
+              />
+            </div>
+          </div>
+
+          <div className={styles.section}>
+            <span className={styles.sectionTitle}>
+              <span className={styles.stepNum}>2</span>
               {t.form.photoLabel}
             </span>
             {!photo ? (
-              <PhotoCapture onCapture={handleCapture} />
+              <div className={styles.photoButtons}>
+                <Button
+                  variant="accent"
+                  onClick={() => setCameraOpen(true)}
+                >
+                  ◉ {t.form.photoCapture}
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  ↑ {t.form.photoUpload}
+                </Button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFile}
+                  className={styles.fileInput}
+                />
+              </div>
             ) : (
               <>
                 <PhotoCropper
@@ -130,35 +188,9 @@ function App() {
             )}
           </div>
 
-          <div className={styles.section}>
-            <span className={styles.sectionTitle}>
-              <span className={styles.stepNum}>2</span>
-              Info
-            </span>
-            <div className={styles.fieldGroup}>
-              <Field
-                id="name"
-                label={t.form.nameLabel}
-                placeholder={t.form.namePlaceholder}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                maxLength={32}
-                autoComplete="name"
-              />
-              <Field
-                id="tag"
-                label={t.form.tagLabel}
-                placeholder={t.form.tagPlaceholder}
-                value={tag}
-                onChange={(e) => setTag(e.target.value)}
-                maxLength={28}
-              />
-            </div>
-          </div>
-
           <div className={styles.actions}>
             <Button
-              variant="accent"
+              variant="primary"
               onClick={handleDownload}
               disabled={!canDownload || isDownloading}
             >
@@ -171,14 +203,19 @@ function App() {
         </aside>
 
         <main className={styles.rightPanel}>
-          <div className={styles.badgeWrap}>
-            <Badge ref={badgeRef} name={name} tag={tag} photo={photo} />
+          <div ref={captureRef} className={styles.captureFrame}>
+            <div className={styles.badgeWrap}>
+              <Badge ref={badgeRef} name={name} tag={tag} photo={photo} />
+            </div>
           </div>
-          <span className={styles.previewLabel}>
-            ◆ {isEN ? "LIVE PREVIEW" : "VISTA EN VIVO"} · ETH·LIMA·BOOTCAMP·2026 ◆
-          </span>
         </main>
       </div>
+
+      <PhotoCapture
+        open={cameraOpen}
+        onCapture={handleCapture}
+        onClose={() => setCameraOpen(false)}
+      />
     </div>
   );
 }

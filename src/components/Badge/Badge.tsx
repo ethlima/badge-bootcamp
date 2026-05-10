@@ -3,7 +3,7 @@ import { useT } from "../../i18n/I18nContext";
 import type { PhotoCrop } from "../../types";
 import styles from "./Badge.module.css";
 
-const PHOTO_SLOT_SIZE = 360;
+const PHOTO_SLOT_SIZE = 366;
 
 type Props = {
   name: string;
@@ -49,7 +49,24 @@ export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
       <span className={styles.headline}>{t.badge.headline}</span>
 
       <div className={styles.photoSlot}>
-        {photo ? (
+        <div className={styles.photoPlaceholder}>
+          <svg
+            className={styles.photoPlaceholderIcon}
+            viewBox="0 0 64 64"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <circle cx="32" cy="24" r="11" fill="currentColor" />
+            <path
+              d="M10 56c0-12.15 9.85-22 22-22s22 9.85 22 22"
+              fill="currentColor"
+            />
+          </svg>
+          <span className={styles.photoPlaceholderLabel}>
+            {t.form.photoLabel}
+          </span>
+        </div>
+        {photo && (
           <img
             src={photo.src}
             alt=""
@@ -57,24 +74,6 @@ export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
             style={getPhotoStyle(photo)}
             draggable={false}
           />
-        ) : (
-          <div className={styles.photoPlaceholder}>
-            <svg
-              className={styles.photoPlaceholderIcon}
-              viewBox="0 0 64 64"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <circle cx="32" cy="24" r="11" fill="currentColor" />
-              <path
-                d="M10 56c0-12.15 9.85-22 22-22s22 9.85 22 22"
-                fill="currentColor"
-              />
-            </svg>
-            <span className={styles.photoPlaceholderLabel}>
-              {t.form.photoLabel}
-            </span>
-          </div>
         )}
       </div>
 
@@ -90,7 +89,9 @@ export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
         <span className={styles.msgLabel}>{t.badge.msgLabel}</span>
         <span className={styles.msgPre}>{t.badge.msgCoursePre}</span>
         <span className={styles.msgBrand}>{t.badge.msgCourseHighlight}</span>
-        <span className={styles.msgWelcome}>{t.badge.msgWelcome}</span>
+        <span className={styles.msgWelcome}>
+          {t.badge.msgWelcome} <span aria-hidden="true">🎉</span>
+        </span>
       </div>
 
       <img

@@ -50,16 +50,16 @@ export type StringSet = {
 export const strings: Record<Locale, StringSet> = {
   es: {
     site: {
-      title: "Ethereum Lima Bootcamp — Badge",
-      subtitle: "Genera tu badge de aceptación al Cohort 01",
+      title: "Crea tu badge",
+      subtitle: "Generador de badge de aceptación",
     },
     form: {
       nameLabel: "Tu nombre",
-      namePlaceholder: "Ej: Andre Neyra",
-      tagLabel: "Tu rol o tag",
-      tagPlaceholder: "Ej: Builder, Frontend, etc.",
+      namePlaceholder: "Ej: Maria Lopez",
+      tagLabel: "Nickname",
+      tagPlaceholder: "Ej: marialopez",
       photoLabel: "Tu foto",
-      photoCapture: "Tomar foto",
+      photoCapture: "Cámara",
       photoUpload: "Subir foto",
       photoRetake: "Volver a tomar",
       photoChange: "Cambiar foto",
@@ -100,16 +100,16 @@ export const strings: Record<Locale, StringSet> = {
   },
   en: {
     site: {
-      title: "Ethereum Lima Bootcamp — Badge",
-      subtitle: "Generate your Cohort 01 acceptance badge",
+      title: "Create your badge",
+      subtitle: "Acceptance badge generator",
     },
     form: {
       nameLabel: "Your name",
-      namePlaceholder: "e.g. Andre Neyra",
-      tagLabel: "Your role or tag",
-      tagPlaceholder: "e.g. Builder, Frontend, etc.",
+      namePlaceholder: "e.g. Maria Lopez",
+      tagLabel: "Nickname",
+      tagPlaceholder: "e.g. marialopez",
       photoLabel: "Your photo",
-      photoCapture: "Take photo",
+      photoCapture: "Camera",
       photoUpload: "Upload photo",
       photoRetake: "Retake",
       photoChange: "Change photo",
