@@ -185,7 +185,7 @@
 .captureFrame {
   position: relative;
   z-index: 1;
-  padding: 64px 72px;
+  padding: 0;
   background: transparent;
 }
 
