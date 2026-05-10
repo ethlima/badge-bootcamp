@@ -268,7 +268,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: calc(24px * var(--bs));
+  gap: calc(18px * var(--bs));
   z-index: 3;
   pointer-events: none;
 }
@@ -296,15 +296,15 @@
 .msgBrand {
   font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 800;
-  font-size: calc(52px * var(--bs));
+  font-size: calc(54px * var(--bs));
   letter-spacing: -0.035em;
   color: #112a59;
-  line-height: 1.4;
+  line-height: 1.35;
   display: inline-block;
   width: 100%;
   white-space: normal;
   word-wrap: break-word;
-  margin-bottom: calc(6px * var(--bs));
+  margin-bottom: calc(4px * var(--bs));
 }
 
 .msgWelcome {
@@ -315,7 +315,7 @@
   line-height: 1.4;
   color: #2e3852;
   letter-spacing: -0.005em;
-  margin-top: calc(16px * var(--bs));
+  margin-top: calc(12px * var(--bs));
 }
 
 /* === Arrow circle (z 3) — Figma spec: 131x131 at (921, 1197). */
