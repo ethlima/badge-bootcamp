@@ -6,15 +6,136 @@
   width: calc(1080px * var(--bs));
   height: calc(1350px * var(--bs));
   position: relative;
-  overflow: hidden;
+  border-radius: 14px;
   flex-shrink: 0;
   font-family: var(--font-sans);
-  background: #112a59;
-  box-shadow: var(--elev-card);
   isolation: isolate;
 }
 
-.template {
+/* Background sections — DOM divs so rounded corners render cleanly. */
+.bgTop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(904px * var(--bs));
+  background: #112a59;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  z-index: 0;
+}
+
+.bgBottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(904px * var(--bs));
+  bottom: 0;
+  background: #fff8d8;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  z-index: 1;
+}
+
+/* Lime ring decoration — extracted from SVG so we can place it BEHIND
+   bgBottom so the cream covers its lower half (matches original design). */
+.limeRing {
+  position: absolute;
+  left: calc(104px * var(--bs));
+  top: calc(754px * var(--bs));
+  width: calc(273px * var(--bs));
+  height: calc(273px * var(--bs));
+  border-radius: 50%;
+  border: calc(68px * var(--bs)) solid #c6f42d;
+  background: transparent;
+  box-sizing: border-box;
+  z-index: 0;
+}
+
+/* Checker pattern (3 cols x 2 rows) — extracted from SVG. Sits above
+   bgBottom so the lower row stays visible over the cream zone. */
+.checker {
+  position: absolute;
+  left: calc(875px * var(--bs));
+  top: calc(805px * var(--bs));
+  width: calc(205px * var(--bs));
+  height: calc(163px * var(--bs));
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  z-index: 2;
+}
+
+.checker span[data-c="lime"] {
+  background: #c6f42d;
+}
+.checker span[data-c="blue"] {
+  background: #214afe;
+}
+
+/* Regalo decoration (lime-blue petals + yellow zigzag) — sits in photo
+   zone, right of the photo. Kept as inline SVG because shapes have curves. */
+.regalo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+
+.regalo > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Cyan sphere — extracted from smiley.svg, now a div so we can layer it
+   above the checker but below the smiley face details. */
+.cyanSphere {
+  position: absolute;
+  left: calc(875px * var(--bs));
+  top: calc(662px * var(--bs));
+  width: calc(129px * var(--bs));
+  height: calc(128px * var(--bs));
+  border-radius: 50%;
+  background: #22bdff;
+  z-index: 3;
+}
+
+/* Smiley face only (cream rim + blue inner + smile + eyes). Renders ABOVE
+   the cyan sphere div. */
+.smiley {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  z-index: 4;
+}
+
+.smiley > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Yellow bar — sits over cream zone at the bottom of the photo area.
+   Original SVG rect was at x=-18 (extending past left edge); clamped to 0
+   here since we're not using overflow:hidden on the badge. */
+.yellowBar {
+  position: absolute;
+  left: 0;
+  top: calc(905px * var(--bs));
+  width: calc(653px * var(--bs));
+  height: calc(63px * var(--bs));
+  background: #f7eb27;
+  z-index: 2;
+}
+
+.bootcampLogo {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -22,7 +143,13 @@
   display: block;
   user-select: none;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
+}
+
+.bootcampLogo > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 /* Headline — Figma spec: 424x77 at (left=328, top=75) canvas. */
@@ -98,7 +225,7 @@
   text-transform: uppercase;
 }
 
-/* Name pill — over SVG blue rect (240,824, 600x80). */
+/* Name pill — solid blue block (240,824, 600x80). */
 .namePill {
   position: absolute;
   left: calc(240px * var(--bs));
@@ -109,6 +236,7 @@
   align-items: center;
   padding: 0 calc(32px * var(--bs));
   overflow: hidden;
+  background: #214afe;
   z-index: 2;
   pointer-events: none;
 }
@@ -124,7 +252,7 @@
   width: 100%;
 }
 
-/* Nickname pill — over SVG lime rect (240,904, 600x64). */
+/* Nickname pill — solid lime block (240,904, 600x64). */
 .nickPill {
   position: absolute;
   left: calc(240px * var(--bs));
@@ -135,6 +263,7 @@
   align-items: center;
   padding: 0 calc(32px * var(--bs));
   overflow: hidden;
+  background: #c6f42d;
   z-index: 2;
   pointer-events: none;
 }

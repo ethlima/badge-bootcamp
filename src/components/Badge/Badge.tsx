@@ -1,6 +1,9 @@
 import { forwardRef, type CSSProperties } from "react";
 import { useT } from "../../i18n/I18nContext";
 import type { PhotoCrop } from "../../types";
+import bootcampLogoSvg from "./logo-bootcamp.svg?raw";
+import smileySvg from "./smiley.svg?raw";
+import regaloSvg from "./regalo.svg?raw";
 import styles from "./Badge.module.css";
 
 const PHOTO_SLOT_SIZE = 366;
@@ -39,11 +42,33 @@ export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
 
   return (
     <div ref={ref} className={styles.badge}>
-      <img
-        src="/badge-bootcamp.svg"
-        alt=""
-        className={styles.template}
-        draggable={false}
+      <div className={styles.bgTop} aria-hidden="true" />
+      <div className={styles.limeRing} aria-hidden="true" />
+      <div
+        className={styles.regalo}
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: regaloSvg }}
+      />
+      <div className={styles.checker} aria-hidden="true">
+        <span data-c="lime" />
+        <span data-c="blue" />
+        <span data-c="lime" />
+        <span data-c="blue" />
+        <span data-c="lime" />
+        <span data-c="blue" />
+      </div>
+      <div className={styles.cyanSphere} aria-hidden="true" />
+      <div
+        className={styles.smiley}
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: smileySvg }}
+      />
+      <div className={styles.bgBottom} aria-hidden="true" />
+      <div className={styles.yellowBar} aria-hidden="true" />
+      <div
+        className={styles.bootcampLogo}
+        aria-hidden="true"
+        dangerouslySetInnerHTML={{ __html: bootcampLogoSvg }}
       />
 
       <span className={styles.headline}>{t.badge.headline}</span>

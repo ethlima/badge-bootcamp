@@ -179,7 +179,7 @@
   padding: 64px 32px;
   position: relative;
   overflow: hidden;
-  background: var(--cream);
+  background: #e8d896;
 }
 
 .captureFrame {
@@ -187,6 +187,23 @@
   z-index: 1;
   padding: 64px 72px;
   background: transparent;
+}
+
+.previewLabel {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.36em;
+  color: var(--ink);
+  opacity: 0.5;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .badgeWrap {
