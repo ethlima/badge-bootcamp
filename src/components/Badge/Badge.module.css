@@ -163,6 +163,7 @@
   width: calc(601px * var(--bs));
   height: calc(458px * var(--bs));
   overflow: hidden;
+  border-radius: calc(40px * var(--bs));
   background: var(--gray-soft);
   z-index: 1;
 }
