@@ -1,0 +1,83 @@
+:root {
+  /* === Anchor === */
+  --cream: #fff8ee;
+  --ink: #0b0717;
+
+  /* === Sunset palette (Ethereum Lima) === */
+  --coral: #e64a30;
+  --orange: #f18a2e;
+  --cyan: #3dbed5;
+  --teal: #2ca89f;
+  --eth-blue: #1b5ba8;
+
+  /* === Bootcamp palette === */
+  --bootcamp-blue: #3d43e0;
+  --bootcamp-lime: #c7f73a;
+  --bootcamp-purple: #7752e0;
+
+  /* === Semantic surfaces === */
+  --bg: var(--cream);
+  --surface: #ffffff;
+  --surface-2: #f5efe2;
+  --fg: var(--ink);
+  --fg-muted: rgba(11, 7, 23, 0.6);
+  --fg-soft: rgba(11, 7, 23, 0.4);
+
+  /* === Borders (subtle, web-bootcamp style) === */
+  --border: rgba(11, 7, 23, 0.08);
+  --border-strong: rgba(11, 7, 23, 0.18);
+  --border-accent: rgba(230, 74, 48, 0.3);
+
+  --accent: var(--coral);
+
+  /* === Glows (difuse colored shadows) === */
+  --glow-coral: 0 18px 50px -18px rgba(230, 74, 48, 0.55);
+  --glow-orange: 0 18px 50px -18px rgba(241, 138, 46, 0.5);
+  --glow-cyan: 0 18px 50px -18px rgba(61, 190, 213, 0.55);
+  --glow-lime: 0 0 48px -12px rgba(199, 247, 58, 0.7);
+  --glow-blue: 0 0 48px -14px rgba(61, 67, 224, 0.65);
+  --glow-purple: 0 0 48px -14px rgba(119, 82, 224, 0.65);
+
+  /* === Soft elevation (no neobrutal hard shadows) === */
+  --elev-1: 0 2px 8px rgba(11, 7, 23, 0.06), 0 1px 2px rgba(11, 7, 23, 0.04);
+  --elev-2: 0 8px 24px rgba(11, 7, 23, 0.08), 0 2px 6px rgba(11, 7, 23, 0.05);
+  --elev-3: 0 18px 48px rgba(11, 7, 23, 0.12), 0 6px 16px rgba(11, 7, 23, 0.06);
+  --elev-card: 0 24px 60px -16px rgba(11, 7, 23, 0.18), 0 4px 12px rgba(11, 7, 23, 0.05);
+
+  /* === Radii (generous, web-bootcamp style) === */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* === Type === */
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+
+  /* === Llama gradient (sunset) === */
+  --gradient-llama: linear-gradient(
+    100deg,
+    #e64a30 0%,
+    #f18a2e 22%,
+    #3dbed5 60%,
+    #2ca89f 100%
+  );
+
+  /* === Misc === */
+  --focus-ring: 0 0 0 3px rgba(230, 74, 48, 0.35);
+}
+
+/* === Utility classes — subtle, mirroring ethlima-web === */
+.gradient-llama-text {
+  background: var(--gradient-llama);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dotted-bg {
+  background-image: radial-gradient(circle at 1px 1px, rgba(11, 7, 23, 0.06) 1px, transparent 0);
+  background-size: 24px 24px;
+}

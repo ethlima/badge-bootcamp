@@ -1,0 +1,244 @@
+/* Badge canvas: SVG is 1080x1350, preview rendered at scale 0.6 = 648x810.
+   Capture at pixelRatio 2 = 1296x1620 (>SVG canvas, downscaled by html-to-image
+   clients to native resolution). All coords below are SVG canvas units * 0.6. */
+.badge {
+  --bs: 0.6;
+  width: calc(1080px * var(--bs));
+  height: calc(1350px * var(--bs));
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  font-family: var(--font-sans);
+  background: #112a59;
+  box-shadow: var(--elev-card);
+  isolation: isolate;
+}
+
+.template {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Headline — Figma spec: 424x77 at (left=328, top=75) canvas. */
+.headline {
+  position: absolute;
+  left: calc(328px * var(--bs));
+  top: calc(75px * var(--bs));
+  width: calc(424px * var(--bs));
+  height: calc(77px * var(--bs));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: calc(64px * var(--bs));
+  letter-spacing: 0;
+  color: #ffffff;
+  line-height: 1;
+  white-space: nowrap;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Photo slot — visible photo area only. SVG (240, 368, 600x456). */
+.photoSlot {
+  position: absolute;
+  left: calc(240px * var(--bs));
+  top: calc(368px * var(--bs));
+  width: calc(600px * var(--bs));
+  height: calc(456px * var(--bs));
+  overflow: hidden;
+  z-index: 1;
+}
+
+.photo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  object-fit: cover;
+}
+
+.photoPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(20px * var(--bs));
+  background: #d9dce3;
+  color: #112a59;
+  text-align: center;
+}
+
+.photoPlaceholderIcon {
+  width: calc(140px * var(--bs));
+  height: calc(140px * var(--bs));
+  color: #6b7385;
+  opacity: 1;
+}
+
+.photoPlaceholderLabel {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: calc(28px * var(--bs));
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: #6b7385;
+  opacity: 1;
+  text-transform: uppercase;
+}
+
+/* Name pill — over SVG blue rect (240,824, 600x80). */
+.namePill {
+  position: absolute;
+  left: calc(240px * var(--bs));
+  top: calc(824px * var(--bs));
+  width: calc(600px * var(--bs));
+  height: calc(80px * var(--bs));
+  display: flex;
+  align-items: center;
+  padding: 0 calc(32px * var(--bs));
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.nameText {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: calc(64px * var(--bs));
+  line-height: 1.2;
+  color: #faed00;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/* Nickname pill — over SVG lime rect (240,904, 600x64). */
+.nickPill {
+  position: absolute;
+  left: calc(240px * var(--bs));
+  top: calc(904px * var(--bs));
+  width: calc(600px * var(--bs));
+  height: calc(64px * var(--bs));
+  display: flex;
+  align-items: center;
+  padding: 0 calc(32px * var(--bs));
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.nickText {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: calc(40px * var(--bs));
+  line-height: 1.2;
+  color: #2e3852;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/* Message — plain text in the cream zone, above the logos/arrow. */
+.message {
+  position: absolute;
+  left: calc(60px * var(--bs));
+  right: calc(60px * var(--bs));
+  top: calc(1024px * var(--bs));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: calc(12px * var(--bs));
+  z-index: 3;
+  pointer-events: none;
+}
+
+.msgLabel {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  font-size: calc(24px * var(--bs));
+  letter-spacing: 0.32em;
+  color: #214afe;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.msgPre {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: calc(30px * var(--bs));
+  letter-spacing: 0.08em;
+  color: #2e3852;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.msgBrand {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  font-size: calc(60px * var(--bs));
+  letter-spacing: -0.035em;
+  color: #112a59;
+  line-height: 1.05;
+}
+
+.msgWelcome {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: calc(26px * var(--bs));
+  line-height: 1.3;
+  color: #2e3852;
+  letter-spacing: -0.005em;
+  margin-top: calc(10px * var(--bs));
+}
+
+/* Arrow circle — Figma spec: 131x131 at (left=921, top=1197) in canvas. */
+.arrowCircle {
+  position: absolute;
+  left: calc(921px * var(--bs));
+  top: calc(1197px * var(--bs));
+  width: calc(131px * var(--bs));
+  height: calc(131px * var(--bs));
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Footer logos — bottom-left, near the bottom edge. */
+.footerLogos {
+  position: absolute;
+  left: calc(46px * var(--bs));
+  bottom: calc(10px * var(--bs));
+  display: flex;
+  align-items: center;
+  gap: calc(40px * var(--bs));
+  z-index: 3;
+  pointer-events: none;
+}
+
+.footerLogoEth {
+  display: block;
+  height: calc(46px * var(--bs));
+  width: auto;
+  user-select: none;
+}
+
+.footerLogoArb {
+  display: block;
+  height: calc(86px * var(--bs));
+  width: auto;
+  user-select: none;
+}

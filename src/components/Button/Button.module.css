@@ -1,0 +1,90 @@
+.button {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 13.5px;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+  border: 1px solid transparent;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring), var(--button-shadow, 0 0 0);
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* === Primary: lime accent (web bootcamp main CTA style) === */
+.primary {
+  background: var(--bootcamp-lime);
+  color: var(--ink);
+  box-shadow: var(--glow-lime);
+  --button-shadow: var(--glow-lime);
+}
+.primary:hover:not(:disabled) {
+  background: #d4ff4f;
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 0 64px -8px rgba(199, 247, 58, 0.85);
+}
+.primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* === Accent: coral (sunset) — for download === */
+.accent {
+  background: var(--coral);
+  color: var(--cream);
+  box-shadow: var(--glow-coral);
+  --button-shadow: var(--glow-coral);
+}
+.accent:hover:not(:disabled) {
+  background: #ee5740;
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 24px 60px -12px rgba(230, 74, 48, 0.7);
+}
+.accent:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* === Secondary: bootcamp-blue === */
+.secondary {
+  background: var(--bootcamp-blue);
+  color: #fff;
+  box-shadow: var(--glow-blue);
+  --button-shadow: var(--glow-blue);
+}
+.secondary:hover:not(:disabled) {
+  background: var(--bootcamp-purple);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: var(--glow-purple);
+}
+
+/* === Ghost: subtle border, no fill === */
+.ghost {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--border-strong);
+  font-weight: 500;
+}
+.ghost:hover:not(:disabled) {
+  border-color: var(--fg);
+  background: rgba(11, 7, 23, 0.04);
+}

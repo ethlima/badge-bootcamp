@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dump 03 · Ticket</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(230, 74, 48, 0.12), transparent 60%),
+        radial-gradient(circle at 70% 80%, rgba(61, 190, 213, 0.12), transparent 60%),
+        #fff8ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+    .nav {
+      position: fixed; top: 16px; left: 16px;
+      color: rgba(11,7,23,0.5);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px; letter-spacing: 0.16em;
+      text-decoration: none;
+    }
+    .nav:hover { color: #e64a30; }
+
+    .ticket {
+      width: 380px;
+      height: 800px;
+      position: relative;
+      filter: drop-shadow(0 40px 80px rgba(11, 7, 23, 0.22));
+    }
+
+    .ticket-body {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #fff8ee;
+      -webkit-mask-image:
+        radial-gradient(circle 13px at 0px 558px, transparent 13px, #000 14px),
+        radial-gradient(circle 13px at 380px 558px, transparent 13px, #000 14px);
+      -webkit-mask-composite: source-in;
+      mask-image:
+        radial-gradient(circle 13px at 0px 558px, transparent 13px, #000 14px),
+        radial-gradient(circle 13px at 380px 558px, transparent 13px, #000 14px);
+      mask-composite: intersect;
+      border-radius: 20px;
+      border: 1.5px solid rgba(11, 7, 23, 0.18);
+      overflow: hidden;
+    }
+
+    .top-strip {
+      height: 14px;
+      background: linear-gradient(90deg, #e64a30, #f18a2e 30%, #c7f73a 50%, #3dbed5 75%, #7752e0);
+    }
+
+    .header {
+      padding: 24px 28px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px dashed rgba(11, 7, 23, 0.18);
+    }
+    .brand-block { display: flex; flex-direction: column; gap: 4px; }
+    .brand-eyebrow {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: #e64a30;
+      text-transform: uppercase;
+    }
+    .brand-title {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #0b0717;
+      line-height: 1;
+    }
+    .brand-title span { color: #e64a30; }
+    .ticket-num {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: rgba(11, 7, 23, 0.55);
+      text-align: right;
+    }
+    .ticket-num strong {
+      display: block;
+      font-size: 16px;
+      color: #0b0717;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    /* Photo zone — foto centrada grande, nombre debajo */
+    .photo-zone {
+      padding: 28px 28px 26px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      border-bottom: 1px dashed rgba(11, 7, 23, 0.18);
+    }
+    .photo {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, #e64a30, #f18a2e 40%, #3dbed5 70%, #2ca89f);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      color: #fff;
+      letter-spacing: 0.22em;
+      box-shadow:
+        0 0 0 4px rgba(255, 248, 238, 0.9),
+        0 0 0 5px rgba(11, 7, 23, 0.08),
+        0 18px 36px -10px rgba(11, 7, 23, 0.32);
+    }
+    .name-block {
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .name-label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      color: #e64a30;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .name-label::before,
+    .name-label::after {
+      content: "";
+      width: 18px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.5;
+    }
+    .name {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      color: #0b0717;
+      margin: 2px 0 4px;
+      word-wrap: break-word;
+    }
+    .role-tag {
+      display: inline-block;
+      background: rgba(11, 7, 23, 0.05);
+      border: 1px solid rgba(11, 7, 23, 0.18);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: rgba(11, 7, 23, 0.7);
+      text-transform: uppercase;
+    }
+
+    .details {
+      padding: 22px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .detail-key {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: rgba(11, 7, 23, 0.55);
+      text-transform: uppercase;
+    }
+    .detail-val {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0b0717;
+      letter-spacing: -0.005em;
+    }
+    .detail-val.lime { color: #6f9d00; }
+    .detail-val.cyan { color: #1c8da3; }
+
+
+    .stub {
+      padding: 22px 26px 16px;
+      background: linear-gradient(180deg, rgba(199, 247, 58, 0.14), rgba(199, 247, 58, 0));
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .stub-main {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .qr-wrap {
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+      background: #fff8ee;
+      border: 1.5px solid rgba(11, 7, 23, 0.18);
+      border-radius: 8px;
+      padding: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 14px -4px rgba(11, 7, 23, 0.18);
+    }
+    .qr-wrap svg { width: 100%; height: 100%; display: block; }
+    .stub-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 9px;
+    }
+    .stub-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .stub-label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: rgba(11, 7, 23, 0.5);
+      text-transform: uppercase;
+    }
+    .stub-value {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: #0b0717;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+    .stub-value.lime { color: #6f9d00; }
+
+    .stub-footer {
+      text-align: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      color: rgba(11, 7, 23, 0.5);
+      text-transform: uppercase;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(11, 7, 23, 0.18);
+    }
+
+    .perforation-line {
+      position: absolute;
+      left: 30px; right: 30px;
+      top: 558px;
+      border-top: 1.5px dashed rgba(11, 7, 23, 0.35);
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <a href="./" class="nav">← Volver</a>
+  <div class="ticket">
+    <div class="ticket-body">
+      <div class="top-strip"></div>
+
+      <div class="header">
+        <div class="brand-block">
+          <span class="brand-eyebrow">★ COHORT 01 · 2026</span>
+          <span class="brand-title">Ethereum <span>Lima</span></span>
+        </div>
+        <div class="ticket-num">
+          MEMBER<br/>
+          <strong>#001</strong>
+        </div>
+      </div>
+
+      <div class="photo-zone">
+        <div class="photo">PHOTO</div>
+        <div class="name-block">
+          <span class="name-label">Aceptado a la cohorte</span>
+          <h1 class="name">Tu nombre</h1>
+          <span class="role-tag">Builder</span>
+        </div>
+      </div>
+
+      <div class="details">
+        <div class="detail-row">
+          <span class="detail-key">Programa</span>
+          <span class="detail-val">Bootcamp 2026</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Duración</span>
+          <span class="detail-val">12 semanas</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Status</span>
+          <span class="detail-val lime">● Activo</span>
+        </div>
+      </div>
+
+      <div class="perforation-line"></div>
+
+      <div class="stub">
+        <div class="stub-main">
+          <div class="qr-wrap">
+            <svg id="qr" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"></svg>
+          </div>
+          <div class="stub-info">
+            <div class="stub-row">
+              <span class="stub-label">Issued</span>
+              <span class="stub-value">2026.03.15</span>
+            </div>
+            <div class="stub-row">
+              <span class="stub-label">Cohort ID</span>
+              <span class="stub-value">ETHL-01-001</span>
+            </div>
+            <div class="stub-row">
+              <span class="stub-label">Verify</span>
+              <span class="stub-value lime">● ethlima.net/v</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stub-footer">★ ETH·LIMA·BOOTCAMP·2026 ★</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const qr = document.getElementById('qr');
+    const SIZE = 25;
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const grid = Array.from({ length: SIZE }, () => Array(SIZE).fill(0));
+
+    function drawFinder(cx, cy) {
+      for (let y = 0; y < 7; y++) {
+        for (let x = 0; x < 7; x++) {
+          const isOuter = (x === 0 || x === 6 || y === 0 || y === 6);
+          const isInner = (x >= 2 && x <= 4 && y >= 2 && y <= 4);
+          if (isOuter || isInner) grid[cy + y][cx + x] = 1;
+        }
+      }
+    }
+    drawFinder(0, 0);
+    drawFinder(SIZE - 7, 0);
+    drawFinder(0, SIZE - 7);
+
+    function isReserved(x, y) {
+      return (
+        (x < 8 && y < 8) ||
+        (x >= SIZE - 8 && y < 8) ||
+        (x < 8 && y >= SIZE - 8)
+      );
+    }
+    function rand(x, y) {
+      const h = (x * 374761393 + y * 668265263) ^ ((x + y) << 5);
+      return ((h >>> 0) % 100) < 48;
+    }
+    for (let y = 0; y < SIZE; y++) {
+      for (let x = 0; x < SIZE; x++) {
+        if (isReserved(x, y)) continue;
+        if (rand(x, y)) grid[y][x] = 1;
+      }
+    }
+
+    function drawAlignment(cx, cy) {
+      for (let y = 0; y < 5; y++) {
+        for (let x = 0; x < 5; x++) {
+          const isOuter = (x === 0 || x === 4 || y === 0 || y === 4);
+          const isCenter = (x === 2 && y === 2);
+          if (isOuter || isCenter) grid[cy + y][cx + x] = 1;
+          else grid[cy + y][cx + x] = 0;
+        }
+      }
+    }
+    drawAlignment(SIZE - 6, SIZE - 6);
+
+    for (let y = 0; y < SIZE; y++) {
+      for (let x = 0; x < SIZE; x++) {
+        if (grid[y][x]) {
+          const r = document.createElementNS(SVG_NS, 'rect');
+          r.setAttribute('x', x);
+          r.setAttribute('y', y);
+          r.setAttribute('width', '1');
+          r.setAttribute('height', '1');
+          r.setAttribute('fill', '#0b0717');
+          qr.appendChild(r);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
