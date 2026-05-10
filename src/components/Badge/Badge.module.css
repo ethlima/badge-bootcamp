@@ -312,7 +312,7 @@
   font-weight: 400;
   font-style: italic;
   font-size: calc(26px * var(--bs));
-  line-height: 1.4;
+  line-height: 1;
   color: #2e3852;
   letter-spacing: -0.005em;
   margin-top: calc(12px * var(--bs));
