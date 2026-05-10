@@ -108,7 +108,7 @@ function App() {
         <aside className={styles.leftPanel}>
           <div className={styles.leftHeader}>
             <img
-              src="/logo.webp"
+              src={new URL("logo.webp", import.meta.env.BASE_URL).href}
               alt="Ethereum Lima"
               className={styles.brandLogo}
               draggable={false}

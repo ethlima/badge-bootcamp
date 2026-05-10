@@ -132,7 +132,7 @@ export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
       </div>
 
       <img
-        src="/arrow-circle.svg"
+        src={new URL("arrow-circle.svg", import.meta.env.BASE_URL).href}
         alt=""
         className={styles.arrowCircle}
         draggable={false}
@@ -140,13 +140,13 @@ export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
 
       <div className={styles.footerLogos}>
         <img
-          src="/logo-eth-lima.svg"
+          src={new URL("logo-eth-lima.svg", import.meta.env.BASE_URL).href}
           alt="Ethereum Lima"
           className={styles.footerLogoEth}
           draggable={false}
         />
         <img
-          src="/logo-arbitrum.svg"
+          src={new URL("logo-arbitrum.svg", import.meta.env.BASE_URL).href}
           alt="Arbitrum"
           className={styles.footerLogoArb}
           draggable={false}
