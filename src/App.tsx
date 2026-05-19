@@ -74,6 +74,13 @@ function App() {
         cacheBust: true,
         pixelRatio: 2,
         backgroundColor: "#fff8d8",
+        style: {
+          background: [
+            "radial-gradient(circle at 1px 1px, rgba(255, 70, 29, 0.18) 1px, transparent 1.4px) 0 0 / 14px 14px",
+            "radial-gradient(circle at 1px 1px, rgba(17, 42, 89, 0.10) 1px, transparent 1.4px) 7px 7px / 14px 14px",
+            "linear-gradient(180deg, #fff8d8 0%, #f5e9bd 100%)",
+          ].join(", "),
+        },
       });
 
       const filename = `eth-lima-badge-${slugify(name) || "cohort-01"}.png`;

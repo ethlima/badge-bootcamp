@@ -179,13 +179,16 @@
   padding: 64px 32px;
   position: relative;
   overflow: hidden;
-  background: var(--cream);
+  background:
+    radial-gradient(circle at 1px 1px, rgba(255, 70, 29, 0.18) 1px, transparent 1.4px) 0 0 / 14px 14px,
+    radial-gradient(circle at 1px 1px, rgba(17, 42, 89, 0.10) 1px, transparent 1.4px) 7px 7px / 14px 14px,
+    linear-gradient(180deg, #fff8d8 0%, #f5e9bd 100%);
 }
 
 .captureFrame {
   position: relative;
   z-index: 1;
-  padding: 0;
+  padding: 64px 72px;
   background: transparent;
 }
 
