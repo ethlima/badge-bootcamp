@@ -234,7 +234,10 @@
   .captureFrame { --badge-scale: 0.36; }
 }
 
-/* Tablet & below — switch to column layout, scale badge to viewport width. */
+/* Tablet & below — column layout. Granular breakpoints below because the
+   captureFrame is ≈1333px * --badge-scale wide, so phones <414px need a
+   smaller scale to fit. (Can't use viewport-relative formulas because mixing
+   length and number in min()/calc makes --badge-scale invalid.) */
 @media (max-width: 1024px) {
   .body {
     flex-direction: column;
@@ -276,4 +279,13 @@
 
 @media (max-width: 480px) {
   .captureFrame { --badge-scale: 0.32; }
+}
+@media (max-width: 414px) {
+  .captureFrame { --badge-scale: 0.28; }
+}
+@media (max-width: 380px) {
+  .captureFrame { --badge-scale: 0.26; }
+}
+@media (max-width: 340px) {
+  .captureFrame { --badge-scale: 0.22; }
 }
