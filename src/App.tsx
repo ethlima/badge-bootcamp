@@ -67,8 +67,15 @@ function App() {
       return;
     }
     setIsDownloading(true);
+    const captureEl = captureRef.current;
+    const prevScale = captureEl?.style.getPropertyValue("--badge-scale") ?? "";
     try {
       if (document.fonts?.ready) await document.fonts.ready;
+
+      // Force canonical 4:5 LinkedIn-portrait rendering regardless of viewport
+      // — overrides any responsive shrinking so the captured PNG always comes
+      // out at 1600x2000 with the badge filling the halftone frame.
+      if (captureEl) captureEl.style.setProperty("--badge-scale", "0.6");
 
       const dataUrl = await toPng(target, {
         cacheBust: true,
@@ -96,6 +103,10 @@ function App() {
       console.error("Badge download failed", err);
       show(t.toast.downloadFailed, "error");
     } finally {
+      if (captureEl) {
+        if (prevScale) captureEl.style.setProperty("--badge-scale", prevScale);
+        else captureEl.style.removeProperty("--badge-scale");
+      }
       setIsDownloading(false);
     }
   };

@@ -13,7 +13,9 @@
         footerLogos                          (focal content)
      4  smiley                               (above the sphere) */
 .badge {
-  --bs: 0.6;
+  /* --bs is inherited from .captureFrame so responsive scaling
+     keeps the badge + halftone padding in a perfect 4:5 ratio. */
+  --bs: var(--badge-scale, 0.6);
   --br: 14px;
   --gray-soft: #d9dce3;
   width: calc(1080px * var(--bs));
