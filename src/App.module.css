@@ -189,7 +189,6 @@
   --badge-scale: 0.6;
   position: relative;
   z-index: 1;
-  padding: calc(158.333px * var(--badge-scale)) calc(126.667px * var(--badge-scale));
   background: transparent;
   flex-shrink: 0;
 }

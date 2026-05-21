@@ -6,11 +6,12 @@ import smileySvg from "./smiley.svg?raw";
 import regaloSvg from "./regalo.svg?raw";
 import styles from "./Badge.module.css";
 
-/* The visible photo slot is 360.6px wide in preview (601 canvas * 0.6).
-   The photo is rendered as a square sized PHOTO_SLOT_SIZE * scale, so we
-   pick 366 (>360.6) to guarantee horizontal coverage and avoid a 0.6px
-   sub-pixel gap that would otherwise expose the slot's gray bg. */
-const PHOTO_SLOT_SIZE = 366;
+/* Photo frame in CANVAS units (601 slot + 1px sub-pixel epsilon so the
+   square photo always covers the slot's gray bg). Width/height/translate
+   are emitted as calc(...) so they scale with --bs at render time —
+   guarantees the same crop in the live preview, in capture clones at
+   any --bs, and at any responsive viewport size. */
+const PHOTO_FRAME_CANVAS = 602;
 
 /* Pill internals in canvas units (matches Badge.module.css spec):
    namePill: 600 wide, 32 padding each side → 536 usable
@@ -45,13 +46,13 @@ type Props = {
 };
 
 function getPhotoStyle(photo: PhotoCrop): CSSProperties {
-  const offsetX = photo.offsetXPct * PHOTO_SLOT_SIZE;
-  const offsetY = photo.offsetYPct * PHOTO_SLOT_SIZE;
-  const eff = PHOTO_SLOT_SIZE * photo.scale;
+  const eff = PHOTO_FRAME_CANVAS * photo.scale;
+  const offsetX = photo.offsetXPct * PHOTO_FRAME_CANVAS;
+  const offsetY = photo.offsetYPct * PHOTO_FRAME_CANVAS;
   return {
-    width: `${eff}px`,
-    height: `${eff}px`,
-    transform: `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`,
+    width: `calc(${eff}px * var(--bs))`,
+    height: `calc(${eff}px * var(--bs))`,
+    transform: `translate(calc(-50% + ${offsetX}px * var(--bs)), calc(-50% + ${offsetY}px * var(--bs)))`,
   };
 }
 

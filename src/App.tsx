@@ -60,34 +60,44 @@ function App() {
   const canDownload = name.trim().length > 0 && photo !== null;
 
   const handleDownload = async () => {
-    const target = captureRef.current ?? badgeRef.current;
-    if (!target) return;
+    // Clone the .badge directly — it has explicit width/height in CSS, so it
+    // keeps its 1080×1350 size when re-parented into the off-screen wrapper.
+    // (Cloning the captureFrame collapses to width:0 outside of flex layout
+    // and html-to-image produces an empty data URL.)
+    const source = badgeRef.current;
+    if (!source) return;
     if (!canDownload) {
       show(t.toast.formIncomplete, "error");
       return;
     }
     setIsDownloading(true);
-    const captureEl = captureRef.current;
-    const prevScale = captureEl?.style.getPropertyValue("--badge-scale") ?? "";
+
+    // Capture from an off-screen clone so the visible badge doesn't reflow
+    // while toPng works. The clone sits inside a 0×0 overflow:hidden wrapper
+    // anchored at viewport (0,0) — hides it visually but keeps the clone's
+    // bounding rect at sane coords so html-to-image's SVG viewBox is correct.
+    // (transform:translate and top:-10000px both break capture because the
+    // library copies the clone's layout into the SVG verbatim.)
+    // Photo styles scale with --bs, so --badge-scale: 1 = canonical 1080×1350.
+    const wrapper = document.createElement("div");
+    wrapper.style.cssText =
+      "position:fixed;top:0;left:0;width:0;height:0;overflow:hidden;pointer-events:none;z-index:-1;";
+    const clone = source.cloneNode(true) as HTMLElement;
+    clone.style.setProperty("--badge-scale", "1");
+    // Square corners in the exported PNG (preview keeps rounded corners as
+    // UI chrome). --br is the single source of truth for the badge,
+    // bgTop and bgBottom radii in Badge.module.css.
+    clone.style.setProperty("--br", "0px");
+    wrapper.appendChild(clone);
+    document.body.appendChild(wrapper);
+
     try {
       if (document.fonts?.ready) await document.fonts.ready;
 
-      // Force canonical 4:5 LinkedIn-portrait rendering regardless of viewport
-      // — overrides any responsive shrinking so the captured PNG always comes
-      // out at 1600x2000 with the badge filling the halftone frame.
-      if (captureEl) captureEl.style.setProperty("--badge-scale", "0.6");
-
-      const dataUrl = await toPng(target, {
+      const dataUrl = await toPng(clone, {
         cacheBust: true,
         pixelRatio: 2,
-        backgroundColor: "#fff8d8",
-        style: {
-          background: [
-            "radial-gradient(circle at 1px 1px, rgba(255, 70, 29, 0.18) 1px, transparent 1.4px) 0 0 / 14px 14px",
-            "radial-gradient(circle at 1px 1px, rgba(17, 42, 89, 0.10) 1px, transparent 1.4px) 7px 7px / 14px 14px",
-            "linear-gradient(180deg, #fff8d8 0%, #f5e9bd 100%)",
-          ].join(", "),
-        },
+        style: { boxShadow: "none" },
       });
 
       const filename = `eth-lima-badge-${slugify(name) || "cohort-01"}.png`;
@@ -103,10 +113,7 @@ function App() {
       console.error("Badge download failed", err);
       show(t.toast.downloadFailed, "error");
     } finally {
-      if (captureEl) {
-        if (prevScale) captureEl.style.setProperty("--badge-scale", prevScale);
-        else captureEl.style.removeProperty("--badge-scale");
-      }
+      wrapper.remove();
       setIsDownloading(false);
     }
   };
