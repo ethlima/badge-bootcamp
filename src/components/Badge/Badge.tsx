@@ -1,4 +1,4 @@
-import { forwardRef, type CSSProperties } from "react";
+import { forwardRef, useEffect, useState, type CSSProperties } from "react";
 import { useT } from "../../i18n/I18nContext";
 import type { PhotoCrop } from "../../types";
 import bootcampLogoSvg from "./logo-bootcamp.svg?raw";
@@ -11,6 +11,32 @@ import styles from "./Badge.module.css";
    pick 366 (>360.6) to guarantee horizontal coverage and avoid a 0.6px
    sub-pixel gap that would otherwise expose the slot's gray bg. */
 const PHOTO_SLOT_SIZE = 366;
+
+/* Pill internals in canvas units (matches Badge.module.css spec):
+   namePill: 600 wide, 32 padding each side → 536 usable
+   nickPill: same width/padding → 536 usable
+   Font sizes match the .nameText / .nickText CSS declarations. */
+const PILL_INNER = 600 - 2 * 32;
+const BADGE_FONT = '"Inter", "Helvetica Neue", Helvetica, Arial, sans-serif';
+
+const measureCanvas =
+  typeof document !== "undefined" ? document.createElement("canvas") : null;
+const measureCtx = measureCanvas?.getContext("2d") ?? null;
+
+function measureText(text: string, fontSize: number, fontWeight: number): number {
+  if (!measureCtx) return 0;
+  measureCtx.font = `${fontWeight} ${fontSize}px ${BADGE_FONT}`;
+  return measureCtx.measureText(text).width;
+}
+
+function fitStyle(text: string, fontSize: number, fontWeight: number): CSSProperties {
+  const w = measureText(text, fontSize, fontWeight);
+  if (w <= 0 || w <= PILL_INNER) return {};
+  return {
+    transform: `scale(${PILL_INNER / w})`,
+    transformOrigin: "left center",
+  };
+}
 
 type Props = {
   name: string;
@@ -43,6 +69,15 @@ export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
   const isEN = t.locale.switch === "ES";
   const displayName = name.trim() || (isEN ? "Your name" : "Tu nombre");
   const tagText = formatTag(tag);
+
+  // Inter loads via Google Fonts with display=swap, so initial canvas
+  // measureText may use fallback metrics. Re-render once fonts are ready
+  // so the auto-fit scale is correct for the actually-rendered font.
+  const [, setFontsLoaded] = useState(false);
+  useEffect(() => {
+    if (typeof document === "undefined" || !document.fonts?.ready) return;
+    document.fonts.ready.then(() => setFontsLoaded(true));
+  }, []);
 
   return (
     <div ref={ref} className={styles.badge}>
@@ -115,11 +150,15 @@ export const Badge = forwardRef<HTMLDivElement, Props>(function Badge(
       </div>
 
       <div className={styles.namePill}>
-        <span className={styles.nameText}>{displayName}</span>
+        <span className={styles.nameText} style={fitStyle(displayName, 64, 300)}>
+          {displayName}
+        </span>
       </div>
 
       <div className={styles.nickPill}>
-        <span className={styles.nickText}>{tagText}</span>
+        <span className={styles.nickText} style={fitStyle(tagText, 40, 500)}>
+          {tagText}
+        </span>
       </div>
 
       <div className={styles.message}>
