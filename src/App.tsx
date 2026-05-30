@@ -20,6 +20,10 @@ function slugify(input: string): string {
     .slice(0, 40);
 }
 
+const shareText = `¡Fui aceptado/a en el Bootcamp Ethereum Lima 2026! 🚀
+6 semanas aprendiendo blockchain, smart contracts y construcción en Web3 junto a la comunidad de builders en Perú.
+#Ethereum #Arbitrum #Web3 @EthereumLima @arbitrum`;
+
 function App() {
   const { t, toggleLocale } = useI18n();
   const { show } = useToast();
@@ -212,6 +216,27 @@ function App() {
                 </Button>
               </>
             )}
+          </div>
+
+          <div className={styles.section}>
+            <span className={styles.sectionTitle}>
+              <span className={styles.stepNum}>3</span>
+              Compartir
+            </span>
+            <div className={styles.photoButtons}>
+              <Button
+                variant="secondary"
+                onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank')}
+              >
+                𝕏 Compartir en X
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => window.open(`https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareText)}`, '_blank')}
+              >
+                in Compartir en LinkedIn
+              </Button>
+            </div>
           </div>
 
           <div className={styles.actions}>
