@@ -49,6 +49,7 @@ export type StringSet = {
     livePreview: string;
   };
   locale: { switch: string; switchAria: string };
+  share: { title: string; x: string; linkedin: string; text: string };
 };
 
 export const strings: Record<Locale, StringSet> = {
@@ -105,6 +106,12 @@ export const strings: Record<Locale, StringSet> = {
       switch: "EN",
       switchAria: "Cambiar a inglés",
     },
+    share: {
+      title: "Compartir",
+      x: "Compartir en X",
+      linkedin: "Compartir en LinkedIn",
+      text: "¡Fui aceptado/a en el Bootcamp Ethereum Lima 2026! 🚀\n6 semanas aprendiendo blockchain, smart contracts y construcción en Web3 junto a la comunidad de builders en Perú.\n#Ethereum #Arbitrum #Web3 @EthereumLima @arbitrum",
+    },
   },
   en: {
     site: {
@@ -158,6 +165,12 @@ export const strings: Record<Locale, StringSet> = {
     locale: {
       switch: "ES",
       switchAria: "Switch to Spanish",
+    },
+    share: {
+      title: "Share",
+      x: "Share on X",
+      linkedin: "Share on LinkedIn",
+      text: "I was accepted into the Ethereum Lima Bootcamp 2026! 🚀\n6 weeks learning blockchain, smart contracts, and Web3 building with the builder community in Peru.\n#Ethereum #Arbitrum #Web3 @EthereumLima @arbitrum",
     },
   },
 };
