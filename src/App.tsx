@@ -218,6 +218,19 @@ function App() {
             )}
           </div>
 
+          <div className={styles.actions}>
+            <Button
+              variant="primary"
+              onClick={handleDownload}
+              disabled={!canDownload || isDownloading}
+            >
+              ↓ {isDownloading ? t.form.downloading : t.form.download}
+            </Button>
+            {!canDownload && (
+              <p className={styles.helperText}>{t.toast.formIncomplete}</p>
+            )}
+          </div>
+
           <div className={styles.section}>
             <span className={styles.sectionTitle}>
               <span className={styles.stepNum}>3</span>
@@ -237,19 +250,6 @@ function App() {
                 in Compartir en LinkedIn
               </Button>
             </div>
-          </div>
-
-          <div className={styles.actions}>
-            <Button
-              variant="primary"
-              onClick={handleDownload}
-              disabled={!canDownload || isDownloading}
-            >
-              ↓ {isDownloading ? t.form.downloading : t.form.download}
-            </Button>
-            {!canDownload && (
-              <p className={styles.helperText}>{t.toast.formIncomplete}</p>
-            )}
           </div>
         </aside>
 
